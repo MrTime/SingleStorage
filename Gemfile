@@ -3,8 +3,10 @@ source 'https://rubygems.org'
 gem 'rspec-rails'
 gem 'haml-rails'
 gem 'less-rails'
-gem 'twitter-bootstrap-rails', branch: 'bootstrap3'
-gem 'devise'
+gem 'twitter-bootstrap-rails'
+gem 'devise' 
+
+gem 'google-api-client'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.0'
