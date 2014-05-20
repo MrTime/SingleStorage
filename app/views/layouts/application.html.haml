@@ -19,34 +19,23 @@
 
 
   %body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          %a.btn.btn-navbar(data-target=".nav-collapse" data-toggle="collapse")
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          %a.brand(href="#") Singlestorage
-          .container.nav-collapse
-            %ul.nav
-              %li= link_to "Link 1", "/path1"
-              %li= link_to "Link 2", "/path2"
-              %li= link_to "Link 3", "/path3"
+    = nav_bar fixed: :top, brand: t('brand'), brand_link: home_index_path, responsive: true do
+      = menu_group do
+        = menu_item t('layout.accounts'), accounts_path
+      = menu_group pull: :right do
+        - if user_signed_in?
+          = drop_down current_user.email do
+            = menu_item t('layout.settings'), edit_user_registration_path
+            = drop_down_divider
+            = menu_item t('layout.logout'), destroy_user_session_path, method: :delete
+
+        - else
+          = menu_item t('devise.shared.sign_in'), new_user_session_path
 
     .container
-
       .row
-        .span9
+        .span12
           = bootstrap_flash
           = yield
-        .span3
-          .well.sidebar-nav
-            %h3 Sidebar
-            %ul.nav.nav-list
-              %li.nav-header Sidebar
-              %li= link_to "Link 1", "/path1"
-              %li= link_to "Link 2", "/path2"
-              %li= link_to "Link 3", "/path3"
-    
       %footer
         %p &copy; Company 2014

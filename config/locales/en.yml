@@ -20,7 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  brand: "Singlecloud"
+
+  layout:
+    accounts: Accounts
+    settings: Settings
+    logout: Logout
 
   home:
     index:
