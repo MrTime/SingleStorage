@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rspec-rails'
+gem 'factory_girl_rails'
 gem 'haml-rails'
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
