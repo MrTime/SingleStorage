@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140607203401) do
+ActiveRecord::Schema.define(version: 20140607212053) do
 
   create_table "accounts", force: true do |t|
     t.string   "login"
@@ -21,6 +21,17 @@ ActiveRecord::Schema.define(version: 20140607203401) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "total_size", limit: 8
+  end
+
+  create_table "items", force: true do |t|
+    t.string   "name"
+    t.integer  "permissions"
+    t.integer  "parent_file_id"
+    t.integer  "account_id",     null: false
+    t.integer  "file_type"
+    t.string   "mime_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|

@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
 
+
   get 'home/index'
 
   resources :accounts
+  resources :items
 
   namespace :services do
     resources :dropbox, only: [:new] do

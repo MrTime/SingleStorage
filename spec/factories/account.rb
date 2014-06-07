@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :account do
-    login
+    login 'account'
   end
 end
