@@ -3,7 +3,7 @@
 %table
   %tr
     %th Login
-    %th Data
+    %th Size
     %th
     %th
     %th
@@ -11,10 +11,8 @@
   - @accounts.each do |account|
     %tr
       %td= account.login
-      %td= account.data
-      %td= link_to 'Show', account
-      %td= link_to 'Edit', edit_account_path(account)
-      %td= link_to 'Destroy', account, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= account.total_size
+      %td= link_to 'Destroy', account_path(account), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 

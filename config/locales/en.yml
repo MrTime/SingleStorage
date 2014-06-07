@@ -30,3 +30,7 @@ en:
   home:
     index:
       start_using: Start Using
+
+  accounts:
+    new:
+      dropbox: 'Add Dropbox account'

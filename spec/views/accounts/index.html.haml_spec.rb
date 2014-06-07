@@ -5,11 +5,11 @@ describe "accounts/index" do
     assign(:accounts, [
       stub_model(Account,
         :login => "Login",
-        :data => "MyText"
+        :total_size => 10
       ),
-      stub_model(Account,
+      stub_model(DropboxAccount,
         :login => "Login",
-        :data => "MyText"
+        :total_size => 10
       )
     ])
   end
@@ -18,6 +18,6 @@ describe "accounts/index" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "tr>td", :text => "Login".to_s, :count => 2
-    assert_select "tr>td", :text => "MyText".to_s, :count => 2
+    assert_select "tr>td", :text => "10".to_s, :count => 2
   end
 end

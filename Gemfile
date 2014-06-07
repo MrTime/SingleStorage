@@ -9,6 +9,7 @@ gem 'twitter-bootstrap-rails'
 gem 'devise' 
 
 gem 'google-api-client'
+gem 'dropbox-sdk'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.0'
