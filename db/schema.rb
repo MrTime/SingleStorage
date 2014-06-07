@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20140503221627) do
 
   create_table "accounts", force: true do |t|
     t.string   "login"
-    t.string   "adapter_type"
+    t.string   "type"
     t.text     "data"
     t.integer  "user_id"
     t.datetime "created_at"
