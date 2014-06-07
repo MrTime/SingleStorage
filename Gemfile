@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rspec-rails'
+gem 'rspec-mocks'
 gem 'factory_girl_rails'
 gem 'haml-rails'
 gem 'less-rails'

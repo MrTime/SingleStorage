@@ -212,6 +212,7 @@ DEPENDENCIES
   less-rails
   mysql2
   rails (= 4.1.0)
+  rspec-mocks
   rspec-rails
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
