@@ -13,8 +13,9 @@ describe Services::DropboxController do
   describe "GET 'auth_finish'" do
     describe 'with user approve' do
       before :each do
-        DropboxOAuth2Flow.any_instance.should_receive(:finish).and_return(['access_token', 'user_id', 'url_state'])
-        DropboxClient.any_instance.should_receive(:account_info).and_return('display_name' => 'name', 'quota_info' => {'quota' => 10**9})
+        DropboxOAuth2Flow.any_instance.stub(:finish).and_return(['access_token', 'user_id', 'url_state'])
+        DropboxClient.any_instance.stub(:account_info).and_return('display_name' => 'name', 'quota_info' => {'quota' => 10**9})
+        DropboxClient.any_instance.stub(:metadata).and_return('contents' => [{'path' => 'path1'}, {'path' => 'path2'}])
       end
 
       it "should create drop box account" do
