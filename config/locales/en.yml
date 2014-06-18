@@ -34,3 +34,11 @@ en:
   accounts:
     new:
       dropbox: 'Add Dropbox account'
+
+  activerecord:
+    errors:
+      models:
+        item:
+          attributes:
+            account:
+              blank: 'File is too large for your storage'

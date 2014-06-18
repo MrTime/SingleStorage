@@ -7,4 +7,9 @@ class User < ActiveRecord::Base
   has_many :accounts
 
   has_many :items, through: :accounts
+
+  def account_for(file) 
+    Rails.logger.debug file.size
+    accounts.where("total_size >= ?", file.size).sample
+  end
 end

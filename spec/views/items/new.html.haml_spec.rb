@@ -3,12 +3,7 @@ require 'spec_helper'
 describe "items/new" do
   before(:each) do
     assign(:item, stub_model(Item,
-      :name => "MyString",
-      :permissions => 1,
-      :parent_file_id => 1,
-      :account_id => 1,
-      :file_type => 1,
-      :mime_type => "MyString"
+      :content => "",
     ).as_new_record)
   end
 
@@ -17,12 +12,7 @@ describe "items/new" do
 
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "form[action=?][method=?]", items_path, "post" do
-      assert_select "input#item_name[name=?]", "item[name]"
-      assert_select "input#item_permissions[name=?]", "item[permissions]"
-      assert_select "input#item_parent_file_id[name=?]", "item[parent_file_id]"
-      assert_select "input#item_account_id[name=?]", "item[account_id]"
-      assert_select "input#item_file_type[name=?]", "item[file_type]"
-      assert_select "input#item_mime_type[name=?]", "item[mime_type]"
+      assert_select "input#item_content[name=?]", "item[content]"
     end
   end
 end

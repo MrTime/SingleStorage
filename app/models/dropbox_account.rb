@@ -20,7 +20,30 @@ class DropboxAccount < Account
     files = dropbox_client.metadata('/')["contents"]
 
     files.each do |f|
-      items.create!(name: f["path"], file_type: f['is_dir'] == true ? :directory : :file)
+      items.create!(file_attributes(f))
     end
+  end
+
+  def upload_to(file, item)
+    begin
+      # Upload the POST'd file to Dropbox, keeping the same name
+      resp = dropbox_client.put_file(file.original_filename, file.read)
+
+      item.update_attributes(file_attributes(resp))
+
+    rescue DropboxAuthError => e
+      item.errors.add(:base, "Dropbox auth error: #{e}")
+      logger.info "Dropbox auth error: #{e}"
+    rescue DropboxError => e
+      item.errors.add(:base, "Dropbox API error: #{e}")
+      logger.info "Dropbox API error: #{e}"
+    end
+  end
+
+  def file_attributes(f)
+    {
+      name: f["path"], 
+      file_type: f['is_dir'] == true ? :directory : :file
+    }
   end
 end

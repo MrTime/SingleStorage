@@ -28,6 +28,7 @@ describe ItemsController do
   # Item. As you add validations to Item, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) { { name: "MyString", account: current_user_account } }
+  let(:valid_params) { { content: { size: 10} } }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -75,42 +76,50 @@ describe ItemsController do
 
   describe "POST create" do
     describe "with valid params" do
+      before(:each) do
+        User.any_instance.stub(:account_for).and_return(current_user_account)
+      end
+
       it "creates a new Item" do
         expect {
-          post :create, {:item => valid_attributes}, valid_session
+          post :create, {:item => valid_params}, valid_session
         }.to change(Item, :count).by(1)
       end
 
       it "attaches item to current user" do
         expect {
-          post :create, {:item => valid_attributes}, valid_session
+          post :create, {:item => valid_params}, valid_session
         }.to change(subject.current_user.items, :count).by(1)
       end
 
       it "assigns a newly created item as @item" do
-        post :create, {:item => valid_attributes}, valid_session
+        post :create, {:item => valid_params}, valid_session
         assigns(:item).should be_a(Item)
         assigns(:item).should be_persisted
       end
 
-      it "redirects to the created item" do
-        post :create, {:item => valid_attributes}, valid_session
-        response.should redirect_to(Item.last)
+      it "redirects to the items page" do
+        post :create, {:item => valid_params}, valid_session
+        response.should redirect_to(items_path)
       end
     end
 
     describe "with invalid params" do
+      before(:each) do
+        User.any_instance.stub(:account_for).and_return(nil)
+      end
+      
       it "assigns a newly created but unsaved item as @item" do
         # Trigger the behavior that occurs when invalid params are submitted
         Item.any_instance.stub(:save).and_return(false)
-        post :create, {:item => { "name" => "invalid value" }}, valid_session
+        post :create, {:item => valid_params}, valid_session
         assigns(:item).should be_a_new(Item)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Item.any_instance.stub(:save).and_return(false)
-        post :create, {:item => { "name" => "invalid value" }}, valid_session
+        post :create, {:item => valid_params}, valid_session
         response.should render_template("new")
       end
     end

@@ -7,22 +7,8 @@
           %li= msg
 
   .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :permissions
-    = f.number_field :permissions
-  .field
-    = f.label :parent_file_id
-    = f.number_field :parent_file_id
-  .field
-    = f.label :account_id
-    = f.number_field :account_id
-  .field
-    = f.label :file_type
-    = f.number_field :file_type
-  .field
-    = f.label :mime_type
-    = f.text_field :mime_type
+    = f.label :content
+    = f.file_field :content
+
   .actions
     = f.submit 'Save'
