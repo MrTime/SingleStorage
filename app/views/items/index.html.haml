@@ -20,7 +20,7 @@
       %td= item.account_id
       %td= item.file_type
       %td= item.mime_type
-      %td= link_to 'Show', item
+      %td= link_to 'Show', item, target: '_blank'
       %td= link_to 'Edit', edit_item_path(item)
       %td= link_to 'Destroy', item, :method => :delete, :data => { :confirm => 'Are you sure?' }
 

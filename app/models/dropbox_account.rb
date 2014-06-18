@@ -40,6 +40,19 @@ class DropboxAccount < Account
     end
   end
 
+  def download_url(item) 
+    begin
+      dropbox_client.media(item.name)['url']
+
+    rescue DropboxAuthError => e
+      logger.info "Dropbox auth error: #{e}"
+      nil
+    rescue DropboxError => e
+      logger.info "Dropbox API error: #{e}"
+      nil
+    end
+  end
+
   def file_attributes(f)
     {
       name: f["path"], 

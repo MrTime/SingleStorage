@@ -11,6 +11,11 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    if url = @item.download_url
+      redirect_to url
+    else
+      redirect_to items_path, alert: t('items.show.dropbox_failed')
+    end
   end
 
   # GET /items/new

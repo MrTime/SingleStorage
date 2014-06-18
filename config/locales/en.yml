@@ -35,6 +35,10 @@ en:
     new:
       dropbox: 'Add Dropbox account'
 
+  items:
+    show:
+      dropbox_failed_download: "Cann't get download url"
+
   activerecord:
     errors:
       models:

@@ -8,4 +8,8 @@ class Item < ActiveRecord::Base
   def content=(file)
     self.account.upload_to(file, self)
   end
+
+  def download_url
+    self.account.download_url(self)
+  end
 end
