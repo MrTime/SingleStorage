@@ -1,6 +1,7 @@
 class Item < ActiveRecord::Base
   attr_accessor :content
   enum file_type: [:file, :directory]
+  serialize :data, Hash
   belongs_to :account
 
   validates :account, presence: true

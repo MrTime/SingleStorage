@@ -56,11 +56,30 @@ class GoogledriveAccount < Account
   end
 
   def download_url(item) 
+    url = ''
+    drive = api_client.discovered_api('drive', 'v2')
+    parameters = {}
+    parameters['fileId'] = item.data[:id]
+    parameters['fields'] = 'id,title,downloadUrl'
+    result = api_client.execute(
+      :api_method => drive.files.get,
+      :parameters => parameters)
+    if result.status == 200
+      metadata = result.data
+      url = metadata.download_url
+    else
+      logger.error "An error occurred: #{result.data['error']['message']}"
+    end
+
+    logger.debug "info: #{metadata.inspect}"
+    url
   end
 
   def file_attributes(f)
-    logger.debug f.inspect
-    { name: f['originalFilename'] }
+    { name: f['title'], data: {
+        id: f['id']
+      }
+    }
   end
 
   def user_info
