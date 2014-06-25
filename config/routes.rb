@@ -12,6 +12,12 @@ Rails.application.routes.draw do
         get :auth_finish
       end
     end
+
+    resources :googledrive, only: [:new] do
+      collection do
+        get :auth_finish
+      end
+    end
   end
 
   devise_for :users

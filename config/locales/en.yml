@@ -34,6 +34,7 @@ en:
   accounts:
     new:
       dropbox: 'Add Dropbox account'
+      googledrive: 'Add Google Drive account'
 
   items:
     show:
@@ -46,3 +47,6 @@ en:
           attributes:
             account:
               blank: 'File is too large for your storage'
+
+        googledrive_account:
+          unable_retrieve: 'Unable to retrieve the e-mail address.'
