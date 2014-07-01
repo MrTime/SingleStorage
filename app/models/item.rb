@@ -11,6 +11,7 @@ class Item < ActiveRecord::Base
   belongs_to :parent, class_name: 'Item'
 
   validates :account, presence: true
+  validates :path, uniqueness: { scope: :account_id }
 
   scope :root, -> { where(parent_item_id: nil) } 
 
@@ -34,5 +35,13 @@ class Item < ActiveRecord::Base
     it = self.clone
     it.name = '..'
     it
+  end
+
+  def children
+    if directory? and super.empty?
+      self.account.fetch_directory(self.path, self)
+    end
+
+    super
   end
 end
