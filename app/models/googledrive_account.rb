@@ -4,7 +4,6 @@ class GoogledriveAccount < Account
   store :data, accessors: [:access_token, :refresh_token, :expires_in, :issued_at],  coder: JSON
 
   before_create :extract_google_drive_account
-  after_create :fetch_files
 
   def extract_google_drive_account
     account_info = user_info
@@ -13,27 +12,21 @@ class GoogledriveAccount < Account
   end
 
   def fetch_files
-    drive = api_client.discovered_api('drive', 'v2')
-    page_token = nil
-    begin
-      parameters = {}
-      if page_token.to_s != ''
-        parameters['pageToken'] = page_token
+    fetch_directory('root')
+  end
+
+  def fetch_directory(path, parent = nil)
+    path = parent.data[:id] if parent
+
+    files = files_list(path)
+    Item.transaction do
+      files.each do |f| 
+        item = items.new(file_attributes(f))
+        item.path = file_path(f, parent) 
+        item.parent_item_id = parent.id if parent
+        item.save
       end
-      result = api_client.execute(
-        :api_method => drive.files.list,
-        :parameters => parameters)
-        if result.status == 200
-          files = result.data
-          files.items.each do |f|
-            items.create!(file_attributes(f))
-          end
-          page_token = files.next_page_token
-        else
-          logger.error "An error occurred: #{result.data['error']['message']}"
-          page_token = nil
-        end
-    end while page_token.to_s != ''
+    end
   end
 
   def upload_to(file, item)
@@ -76,7 +69,19 @@ class GoogledriveAccount < Account
   end
 
   def file_attributes(f)
-    { name: f['title'], data: {
+    if f['mimeType'] == 'application/vnd.google-apps.folder'
+      type = :directory
+      mimetype = nil
+    else
+      type = :file
+      mimetype = f['mimeType']
+    end
+
+    {
+      file_size: f['file_size'],
+      file_type: type,
+      mime_type: mimetype,
+      data: {
         id: f['id']
       }
     }
@@ -111,6 +116,46 @@ class GoogledriveAccount < Account
                           expires_in: self.expires_in,
                           issued_at: self.issued_at)
     @client
+  end
+
+  private
+
+  def files_list id
+    drive = api_client.discovered_api('drive', 'v2')
+    list = []
+    page_token = nil
+
+    begin
+      parameters = {}
+      parameters['q'] = "'#{id}' in parents"
+      if page_token.to_s != ''
+        parameters['pageToken'] = page_token
+      end
+
+      result = api_client.execute(
+        :api_method => drive.files.list,
+        :parameters => parameters)
+
+        if result.status == 200
+          files = result.data
+          files.items.each do |f|
+            list << f
+          end
+          page_token = files.next_page_token
+        else
+          logger.error "An error occurred: #{result.data['error']['message']}"
+          page_token = nil
+        end
+    end while page_token.to_s != ''
+
+    list
+  end
+
+  def file_path item, parent = nil
+    path = ""
+    path << parent.path if parent
+    path << "/#{item['title']}"
+    path
   end
 
 end

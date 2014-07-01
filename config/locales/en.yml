@@ -49,6 +49,11 @@ en:
         mime_type: Type
         updated_at: Last changed
 
+      account:
+        login: Name
+        total_size: Full size
+        available_size: Free
+
     errors:
       models:
         item:

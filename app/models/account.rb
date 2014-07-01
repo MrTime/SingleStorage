@@ -2,6 +2,8 @@ class Account < ActiveRecord::Base
   belongs_to :user
   has_many :items
 
+  after_create :fetch_files
+
   def upload_to
     raise NotImplementedError
   end

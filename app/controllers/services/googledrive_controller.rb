@@ -11,7 +11,7 @@ class Services::GoogledriveController < ApplicationController
       api_client.authorization.code = params[:code]
       api_client.authorization.fetch_access_token!
 
-      @account = GoogledriveAccount.create(access_token: api_client.authorization.access_token, 
+      @account = GoogledriveAccount.create!(access_token: api_client.authorization.access_token, 
                                            refresh_token: api_client.authorization.refresh_token,
                                            expires_in: api_client.authorization.expires_in,
                                            issued_at: api_client.authorization.issued_at,
