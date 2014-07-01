@@ -15,4 +15,8 @@ class Account < ActiveRecord::Base
   def fetch_files
     raise NotImplementedError
   end
+
+  def preview_url(item) 
+    raise NotImplementedError
+  end
 end

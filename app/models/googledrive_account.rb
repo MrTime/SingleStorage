@@ -70,6 +70,10 @@ class GoogledriveAccount < Account
     url
   end
 
+  def preview_url(item) 
+    file_info(item)['alternateLink']
+  end
+
   def file_attributes(f)
     if f['mimeType'] == 'application/vnd.google-apps.folder'
       type = :directory
@@ -124,8 +128,6 @@ class GoogledriveAccount < Account
 
   def about
     drive = api_client.discovered_api('drive', 'v2')
-
-    parameters = {}
     result = api_client.execute(api_method: drive.about.get)
 
     if result.status == 200
@@ -173,6 +175,24 @@ class GoogledriveAccount < Account
     path << parent.path if parent
     path << "/#{item['title']}"
     path
+  end
+
+  def file_info item
+    drive = api_client.discovered_api('drive', 'v2')
+
+    parameters = {}
+    parameters['fileId'] = item.data[:id]
+    result = api_client.execute(api_method: drive.files.get, parameters: parameters)
+
+    if result.status == 200
+      info = result.data
+    else
+      logger.error "An error occurred: #{result.data['error']['message']}"
+    end
+
+    puts info
+
+    info
   end
 
 end
