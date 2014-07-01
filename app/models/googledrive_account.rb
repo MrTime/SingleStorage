@@ -132,6 +132,8 @@ class GoogledriveAccount < Account
 
   def update_tokens(client)
     auth = client.authorization
+    return unless auth.expired?
+
     auth.fetch_access_token!
     self.update_attributes(access_token: auth.access_token,
                            refresh_token: auth.refresh_token,
