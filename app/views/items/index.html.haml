@@ -6,16 +6,9 @@
       %th= Item.human_attribute_name('name')
       %th= Item.human_attribute_name('mime_type')
       %th= Item.human_attribute_name('updated_at')
-      %th 
 
   %tbody
-    - @items.each do |item|
-      %tr
-        %td= item.name
-        %td= item.mime_type
-        %td= item.updated_at
-        %td
-          = link_to t('items.index.download'), item, target: '_blank'
+    = render @items
 
 %br
 

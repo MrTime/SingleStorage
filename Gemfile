@@ -7,6 +7,7 @@ gem 'haml-rails'
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 gem 'devise' 
+gem 'friendly_id'
 
 gem 'google-api-client'
 gem 'dropbox-sdk'

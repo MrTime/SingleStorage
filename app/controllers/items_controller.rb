@@ -5,16 +5,17 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = current_user.items.all
+    @items = current_user.items.root
   end
 
   # GET /items/1
   # GET /items/1.json
   def show
-    if url = @item.download_url
-      redirect_to url
+    if @item.directory?
+      @items = @item.children
+      render action: :index
     else
-      redirect_to items_path, alert: t('items.show.dropbox_failed')
+      redirect_to @item.preview_url
     end
   end
 
@@ -72,7 +73,7 @@ class ItemsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.find(params[:id])
+      @item = Item.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

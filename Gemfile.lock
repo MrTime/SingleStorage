@@ -69,6 +69,8 @@ GEM
       railties (>= 3.0.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    friendly_id (5.0.4)
+      activerecord (>= 4.0.0)
     google-api-client (0.7.1)
       addressable (>= 2.3.2)
       autoparse (>= 0.3.3)
@@ -208,6 +210,7 @@ DEPENDENCIES
   devise
   dropbox-sdk
   factory_girl_rails
+  friendly_id
   google-api-client
   haml-rails
   jbuilder (~> 2.0)

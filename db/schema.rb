@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701082634) do
+ActiveRecord::Schema.define(version: 20140701095914) do
 
   create_table "accounts", force: true do |t|
     t.string   "login"
@@ -23,10 +23,23 @@ ActiveRecord::Schema.define(version: 20140701082634) do
     t.integer  "total_size", limit: 8
   end
 
+  create_table "friendly_id_slugs", force: true do |t|
+    t.string   "slug",                      null: false
+    t.integer  "sluggable_id",              null: false
+    t.string   "sluggable_type", limit: 50
+    t.string   "scope"
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+
   create_table "items", force: true do |t|
-    t.string   "name"
+    t.string   "path"
     t.integer  "permissions"
-    t.integer  "parent_file_id"
+    t.integer  "parent_item_id"
     t.integer  "account_id",     null: false
     t.integer  "file_type"
     t.string   "mime_type"
@@ -34,7 +47,10 @@ ActiveRecord::Schema.define(version: 20140701082634) do
     t.datetime "updated_at"
     t.text     "data"
     t.integer  "file_size"
+    t.string   "slug"
   end
+
+  add_index "items", ["slug"], name: "index_items_on_slug", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

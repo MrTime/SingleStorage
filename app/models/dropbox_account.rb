@@ -17,11 +17,26 @@ class DropboxAccount < Account
   end
 
   def fetch_files
-    files = dropbox_client.metadata('/')["contents"]
+    fetch_directory('/')
+  end
+  
+  def fetch_directory(path, parent = nil)
+    folders = []
 
-    files.each do |f|
-      items.create!(file_attributes(f))
+    Item.transaction do
+      files = dropbox_client.metadata(path)['contents']
+      files.each do |f|
+        item = items.new(file_attributes(f))
+        item.parent_item_id = parent.id if parent
+        item.save!
+
+        folders << item if item.directory?
+      end
     end
+
+    #folders.each do |f|
+    #  fetch_directory(f.name, f)
+    #end
   end
 
   def upload_to(file, item)
@@ -53,10 +68,25 @@ class DropboxAccount < Account
     end
   end
 
+  def preview_url(item) 
+    begin
+      dropbox_client.media(item.path)['url']
+
+    rescue DropboxAuthError => e
+      logger.info "Dropbox auth error: #{e}"
+      nil
+    rescue DropboxError => e
+      logger.info "Dropbox API error: #{e}"
+      nil
+    end
+  end
+
   def file_attributes(f)
     {
-      name: f["path"], 
-      file_type: f['is_dir'] == true ? :directory : :file
+      path: f['path'], 
+      file_size: f['size'],
+      file_type: f['is_dir'] == true ? :directory : :file,
+      mime_type: f['mime_type']
     }
   end
 end
