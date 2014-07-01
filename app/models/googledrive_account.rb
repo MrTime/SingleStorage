@@ -7,8 +7,10 @@ class GoogledriveAccount < Account
 
   def extract_google_drive_account
     account_info = user_info
+    about_info = about 
     self.login = account_info.email
-    self.total_size = 9 * 10**9
+    self.total_size = about_info['quotaBytesTotal'].to_i
+    self.available_size = about_info['quotaBytesTotal'].to_i - about_info['quotaBytesUsed'].to_i
   end
 
   def fetch_files
@@ -119,6 +121,21 @@ class GoogledriveAccount < Account
   end
 
   private
+
+  def about
+    drive = api_client.discovered_api('drive', 'v2')
+
+    parameters = {}
+    result = api_client.execute(api_method: drive.about.get)
+
+    if result.status == 200
+      about = result.data
+    else
+      logger.error "An error occurred: #{result.data['error']['message']}"
+    end
+
+    about
+  end
 
   def files_list id
     drive = api_client.discovered_api('drive', 'v2')
