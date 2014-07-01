@@ -111,20 +111,33 @@ class GoogledriveAccount < Account
   end
 
   def api_client
-    return @client unless @client.nil?
-    @client = Google::APIClient.new
-    @client.authorization.client_id = Rails.application.secrets.googledrive['client_id']
-    @client.authorization.client_secret = Rails.application.secrets.googledrive['client_secret']
-    @client.authorization.scope = ['https://www.googleapis.com/auth/drive',
-                                   'https://www.googleapis.com/auth/userinfo']
-    @client.authorization.update_token!(access_token: self.access_token,
-                          refresh_token: self.refresh_token,
-                          expires_in: self.expires_in,
-                          issued_at: self.issued_at)
+    if @client.nil?
+      @client = Google::APIClient.new
+      @client.authorization.client_id = Rails.application.secrets.googledrive['client_id']
+      @client.authorization.client_secret = Rails.application.secrets.googledrive['client_secret']
+      @client.authorization.scope = ['https://www.googleapis.com/auth/drive',
+                                     'https://www.googleapis.com/auth/userinfo']
+      @client.authorization.update_token!(access_token: self.access_token,
+                            refresh_token: self.refresh_token,
+                            expires_in: self.expires_in,
+                            issued_at: self.issued_at)
+    end
+
+    update_tokens(@client)
+
     @client
   end
 
   private
+
+  def update_tokens(client)
+    auth = client.authorization
+    auth.fetch_access_token!
+    self.update_attributes(access_token: auth.access_token,
+                           refresh_token: auth.refresh_token,
+                           expires_in: auth.expires_in,
+                           issued_at: auth.issued_at)
+  end
 
   def about
     drive = api_client.discovered_api('drive', 'v2')
