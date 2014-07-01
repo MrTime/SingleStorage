@@ -6,14 +6,14 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = current_user.items.root
+    @items = current_user.items.root.files
   end
 
   # GET /items/1
   # GET /items/1.json
   def show
     if @item.directory?
-      @items = @item.children
+      @items = @item.children.files
       add_item_parent_to_breadcrumb(@item)
       render action: :index
     else

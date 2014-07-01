@@ -1,17 +1,18 @@
 = render_breadcrumbs
 
+.row
+  .col-md-8
+    %h5
+      = Item.human_attribute_name('name')
+  .col-md-2
+    %h5
+      = Item.human_attribute_name('file_size')
+  .col-md-2
+    %h5
+      = Item.human_attribute_name('updated_at')
+
 %ul.list-group
   = render @items
-
-/
-  %table.table.table-fixedheader#items
-    %thead
-      %tr
-        %th= Item.human_attribute_name('name')
-        %th= Item.human_attribute_name('mime_type')
-        %th= Item.human_attribute_name('updated_at')
-
-    %tbody
 
 %br
 

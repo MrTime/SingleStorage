@@ -14,6 +14,7 @@ class Item < ActiveRecord::Base
   validates :path, uniqueness: { scope: :account_id }
 
   scope :root, -> { where(parent_item_id: nil) } 
+  scope :files, -> { order('file_type desc, path asc') } 
 
   def name
     File.basename(self.path)

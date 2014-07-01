@@ -47,6 +47,7 @@ en:
       item:
         name: File name
         mime_type: Type
+        file_size: Size
         updated_at: Last changed
 
       account:
