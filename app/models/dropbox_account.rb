@@ -9,7 +9,9 @@ class DropboxAccount < Account
   def extract_dropbox_account
     account_info = dropbox_client.account_info
     self.login = account_info['display_name']
-    self.total_size = account_info['quota_info']['quota']
+    quota = account_info['quota_info']
+    self.total_size = quota['quota'].to_i
+    self.available_size = quota['quota'].to_i - quota['normal'].to_i - quota['shared'].to_i
   end
 
   def dropbox_client

@@ -2,16 +2,16 @@
 
 %table
   %tr
-    %th Login
-    %th Size
-    %th
-    %th
+    %th= Account.human_attribute_name('login')
+    %th= Account.human_attribute_name('total_size')
+    %th= Account.human_attribute_name('available_size')
     %th
 
   - @accounts.each do |account|
     %tr
       %td= account.login
       %td= account.total_size
+      %td= account.available_size
       %td= link_to 'Destroy', account_path(account), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br

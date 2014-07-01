@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701095914) do
+ActiveRecord::Schema.define(version: 20140701141314) do
 
   create_table "accounts", force: true do |t|
     t.string   "login"
@@ -20,7 +20,8 @@ ActiveRecord::Schema.define(version: 20140701095914) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "total_size", limit: 8
+    t.integer  "total_size",     limit: 8
+    t.integer  "available_size", limit: 8
   end
 
   create_table "friendly_id_slugs", force: true do |t|
