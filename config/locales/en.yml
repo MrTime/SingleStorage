@@ -37,10 +37,18 @@ en:
       googledrive: 'Add Google Drive account'
 
   items:
+    index:
+      download: 'Download'
     show:
       dropbox_failed_download: "Cann't get download url"
 
   activerecord:
+    attributes:
+      item:
+        name: File name
+        mime_type: Type
+        updated_at: Last changed
+
     errors:
       models:
         item:

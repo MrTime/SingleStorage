@@ -1,28 +1,21 @@
 %h1 Listing items
 
-%table
-  %tr
-    %th Name
-    %th Permissions
-    %th Parent file
-    %th Account
-    %th File type
-    %th Mime type
-    %th
-    %th
-    %th
-
-  - @items.each do |item|
+%table.table.table-fixedheader#items
+  %thead
     %tr
-      %td= item.name
-      %td= item.permissions
-      %td= item.parent_file_id
-      %td= item.account_id
-      %td= item.file_type
-      %td= item.mime_type
-      %td= link_to 'Show', item, target: '_blank'
-      %td= link_to 'Edit', edit_item_path(item)
-      %td= link_to 'Destroy', item, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %th= Item.human_attribute_name('name')
+      %th= Item.human_attribute_name('mime_type')
+      %th= Item.human_attribute_name('updated_at')
+      %th 
+
+  %tbody
+    - @items.each do |item|
+      %tr
+        %td= item.name
+        %td= item.mime_type
+        %td= item.updated_at
+        %td
+          = link_to t('items.index.download'), item, target: '_blank'
 
 %br
 
