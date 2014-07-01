@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: [:show, :edit, :update, :destroy]
+  add_breadcrumb :index, :items_path
 
   # GET /items
   # GET /items.json
@@ -13,10 +14,12 @@ class ItemsController < ApplicationController
   def show
     if @item.directory?
       @items = @item.children
+      add_item_parent_to_breadcrumb(@item)
       render action: :index
     else
       redirect_to @item.preview_url
     end
+
   end
 
   # GET /items/new
@@ -79,5 +82,10 @@ class ItemsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
       params.require(:item).permit(:content)
+    end
+
+    def add_item_parent_to_breadcrumb(item)
+      add_item_parent_to_breadcrumb(item.parent) if item.parent
+      add_breadcrumb item.name, item_path(item)
     end
 end

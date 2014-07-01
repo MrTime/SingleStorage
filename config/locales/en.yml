@@ -63,3 +63,7 @@ en:
 
         googledrive_account:
           unable_retrieve: 'Unable to retrieve the e-mail address.'
+
+  breadcrumbs:
+    items:
+      index: 'Home'

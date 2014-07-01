@@ -1,14 +1,17 @@
-%h1 Listing items
+= render_breadcrumbs
 
-%table.table.table-fixedheader#items
-  %thead
-    %tr
-      %th= Item.human_attribute_name('name')
-      %th= Item.human_attribute_name('mime_type')
-      %th= Item.human_attribute_name('updated_at')
+%ul.list-group
+  = render @items
 
-  %tbody
-    = render @items
+/
+  %table.table.table-fixedheader#items
+    %thead
+      %tr
+        %th= Item.human_attribute_name('name')
+        %th= Item.human_attribute_name('mime_type')
+        %th= Item.human_attribute_name('updated_at')
+
+    %tbody
 
 %br
 

@@ -8,7 +8,7 @@ class Item < ActiveRecord::Base
 
   belongs_to :account
   has_many :children, class_name: 'Item', foreign_key: 'parent_item_id'
-  belongs_to :parent, class_name: 'Item'
+  belongs_to :parent, class_name: 'Item', foreign_key: 'parent_item_id'
 
   validates :account, presence: true
   validates :path, uniqueness: { scope: :account_id }

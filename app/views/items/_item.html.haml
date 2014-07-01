@@ -1,6 +1,8 @@
-%tr
-  %td
+%li.list-group-item
+  .col-md-6
     = link_to item.name, item
-  %td= item.mime_type
-  %td= item.updated_at
+  .col-md-3
+    %td= item.mime_type
+  .col-md-3
+    %td= item.updated_at
 
