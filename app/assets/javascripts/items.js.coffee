@@ -2,12 +2,13 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #
-$ ->
+ready = ->
   url = $('#new_item').prop('action')
 
   $('#item_content').fileupload(
     url: url
     dataType: 'json'
+    maxChunkSize: 4 * 1024 * 1024
     done: (e, data) ->
       $.each data.result.files, (index, file) ->
         $('<p/>').text(file.name).appendTo('#files')
@@ -19,3 +20,7 @@ $ ->
       )
   ).prop('disabled', !$.support.fileInput)
    .parent().addClass($.support.fileInput ? undefined : 'disabled')
+
+$(document).ready(ready)
+$(document).on('page:load', ready)
+

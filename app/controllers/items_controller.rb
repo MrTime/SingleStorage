@@ -35,9 +35,24 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @account = current_user.account_for(item_params[:content])
-    @item = @account.items.new
-    @item.assign_attributes(item_params)
+    start_byte, end_byte, full_bytes = content_range_params
+
+    if start_byte > 0
+      @item = current_user.items.by_path(full_item_path).first
+    else
+      if parent_item.nil?
+        @item = Item.new
+      else
+        @item = parent_item.children.new
+      end
+
+      @item.assign_attributes(path: full_item_path,
+                              mime_type: item_content_type,
+                              accounts: current_user.accounts.with_available_bytes(full_bytes),
+                              file_size: full_bytes)
+    end
+
+    @item.write_content(item_params[:content].first, start_byte, end_byte)
 
     @items = [@item]
 
@@ -85,11 +100,39 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:parent_item_id, content: [])
+      @item_params ||= params.require(:item).permit(:parent_item_id, content: [])
     end
 
     def add_item_parent_to_breadcrumb(item)
       add_item_parent_to_breadcrumb(item.parent) if item.parent
       add_breadcrumb item.name, item_path(item)
+    end
+
+    def content_range_params
+      if request.headers["Content-Range"]
+        /bytes (\d+)-(\d+)\/(\d+)/.match(request.headers["Content-Range"])[1..3].map {|i| i.to_i}
+      else
+        [0, item_params[:content].size, item_params[:content].size]
+      end
+    end
+
+    def full_item_path
+      path = ""
+      path << parent_item.path if parent_item
+      path << "/"
+      path << item_params[:content].first.original_filename
+      path
+    end
+
+    def item_content_type
+      item_params[:content].first.content_type
+    end
+
+    def parent_item
+      @parent_item ||= if item_params[:parent_item_id]
+                         Item.find(item_params[:parent_item_id])
+                       else
+                         nil
+                       end
     end
 end

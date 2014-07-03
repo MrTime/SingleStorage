@@ -13,22 +13,8 @@
         %span Add files...
         = f.file_field :content, multiple: true
 
-      %button.btn.btn-primary.start{type:"submit"}
-        %i.icon-upload.icon-white
-        %span Start upload
-
-      %button.btn.btn-warning.cancel{type:"reset"}
-        %i.icon-ban-circle.icon-white
-        %span Cancel upload
-
-      %button.btn.btn-danger.delete{type:"button"}
-        %i.icon-trash.icon-white
-        %span Delete
-
-      %input.toggle{type:"checkbox"}
-    .span5
-      .progress.progress-success.progress-striped.active.fade
-        .bar{style:"width:0%;"}
+      #progress.progress
+        .progress-bar.progress-bar-success
 
   .row
     .col-md-12

@@ -119,7 +119,7 @@ class GoogledriveAccount < Account
                                      'https://www.googleapis.com/auth/userinfo']
       @client.authorization.update_token!(access_token: self.access_token,
                             refresh_token: self.refresh_token,
-                            expires_in: self.expires_in.to_i,
+                            expires_in: self.expires_in,
                             issued_at: self.issued_at)
     end
 
@@ -137,7 +137,7 @@ class GoogledriveAccount < Account
     auth.fetch_access_token!
     self.update_attributes(access_token: auth.access_token,
                            refresh_token: auth.refresh_token,
-                           expires_in: auth.expires_in.to_i,
+                           expires_in: auth.expires_in,
                            issued_at: auth.issued_at)
   end
 

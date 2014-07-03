@@ -1,7 +1,7 @@
 class Item < ActiveRecord::Base
   extend FriendlyId
 
-  attr_accessor :content, :name
+  attr_accessor :name, :accounts
   enum file_type: [:file, :directory]
   serialize :data, Hash
   friendly_id :path, use: :slugged
@@ -15,13 +15,18 @@ class Item < ActiveRecord::Base
 
   scope :root, -> { where(parent_item_id: nil) } 
   scope :files, -> { order('file_type desc, path asc') } 
+  scope :by_path, -> (path) { where(path: path) }
 
   def name
     File.basename(self.path)
   end
 
-  def content=(file)
-    self.account.upload_to(file.first, self)
+  def accounts=(accounts)
+    self.account = accounts.sample
+  end
+
+  def write_content(file, starts, ends)
+    #self.account.upload_to(file.first, self)
   end
 
   def download_url
@@ -29,7 +34,8 @@ class Item < ActiveRecord::Base
   end
 
   def preview_url
-    self.account.preview_url(self)
+    #self.account.preview_url(self)
+    ""
   end
 
   def return_item

@@ -4,6 +4,8 @@ class Account < ActiveRecord::Base
 
   after_create :fetch_files
 
+  scope :with_available_bytes, -> (size) { where("available_size >= ?", size) }
+
   def upload_to
     raise NotImplementedError
   end
