@@ -1,5 +1,7 @@
 = render_breadcrumbs
 
+= link_to 'New Item', new_item_path(root: @item.try(:id))
+
 .row
   .col-md-8
     %h5
@@ -16,4 +18,3 @@
 
 %br
 
-= link_to 'New Item', new_item_path

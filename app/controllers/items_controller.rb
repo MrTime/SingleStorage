@@ -25,6 +25,7 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
+    @item.parent = Item.find(params[:root]) if params[:root]
   end
 
   # GET /items/1/edit
@@ -34,17 +35,20 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = Item.new
-    @item.account = current_user.account_for(item_params[:content])
+    @account = current_user.account_for(item_params[:content])
+    @item = @account.items.new
     @item.assign_attributes(item_params)
+
+    @items = [@item]
 
     respond_to do |format|
       if @item.save
         format.html { redirect_to items_path, notice: 'Item was successfully created.' }
-        format.json { render :show, status: :created, location: @item }
+        format.json { render }
+        
       else
         format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+        format.json { render :json => [{:error => "custom_failure"}], :status => 304 }
       end
     end
   end
@@ -81,7 +85,7 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:content)
+      params.require(:item).permit(:parent_item_id, content: [])
     end
 
     def add_item_parent_to_breadcrumb(item)

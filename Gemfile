@@ -8,6 +8,7 @@ gem 'less-rails'
 gem 'twitter-bootstrap-rails', git: 'git://github.com/seyhunak/twitter-bootstrap-rails.git', branch: 'bootstrap3'
 gem 'devise' 
 gem 'friendly_id'
+gem 'jquery-ui-rails'
 
 gem 'google-api-client'
 gem 'dropbox-sdk'

@@ -21,7 +21,7 @@ class Item < ActiveRecord::Base
   end
 
   def content=(file)
-    self.account.upload_to(file, self)
+    self.account.upload_to(file.first, self)
   end
 
   def download_url

@@ -10,6 +10,6 @@ class User < ActiveRecord::Base
 
   def account_for(file) 
     Rails.logger.debug file.size
-    accounts.where("total_size >= ?", file.size).sample
+    accounts.where("available_size >= ?", file.size).sample
   end
 end
