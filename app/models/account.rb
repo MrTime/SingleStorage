@@ -6,8 +6,14 @@ class Account < ActiveRecord::Base
 
   scope :with_available_bytes, -> (size) { where("available_size >= ?", size) }
 
-  def upload_to
-    raise NotImplementedError
+  def upload_to(path, file, range, session)
+    #raise NotImplementedError
+    session[:id] = 1234
+    Chunk.new(range, self)
+  end
+
+  def finish_upload(session)
+    logger.debug "finished #{session[:id]}"
   end
 
   def fetch_directory(path, parent = nil)

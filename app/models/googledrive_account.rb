@@ -31,7 +31,7 @@ class GoogledriveAccount < Account
     end
   end
 
-  def upload_to(file, item)
+  def upload_to1(file, item)
     drive = api_client.discovered_api('drive', 'v2')
     gfile = drive.files.insert.request_schema.new({
       'title' => file.original_filename,

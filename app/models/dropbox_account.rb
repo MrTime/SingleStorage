@@ -41,7 +41,7 @@ class DropboxAccount < Account
     #end
   end
 
-  def upload_to(file, item)
+  def upload_to1(file, item)
     begin
       # Upload the POST'd file to Dropbox, keeping the same name
       resp = dropbox_client.put_file(file.original_filename, file.read)

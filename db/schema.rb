@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140701141314) do
+ActiveRecord::Schema.define(version: 20140704123027) do
 
   create_table "accounts", force: true do |t|
     t.string   "login"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20140701141314) do
     t.text     "data"
     t.integer  "file_size"
     t.string   "slug"
+    t.text     "chunks"
   end
 
   add_index "items", ["slug"], name: "index_items_on_slug", unique: true, using: :btree

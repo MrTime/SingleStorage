@@ -52,7 +52,7 @@ class ItemsController < ApplicationController
                               file_size: full_bytes)
     end
 
-    @item.write_content(item_params[:content].first, start_byte, end_byte)
+    @item.write_content(item_params[:content].first, start_byte..end_byte)
 
     @items = [@item]
 
@@ -112,7 +112,7 @@ class ItemsController < ApplicationController
       if request.headers["Content-Range"]
         /bytes (\d+)-(\d+)\/(\d+)/.match(request.headers["Content-Range"])[1..3].map {|i| i.to_i}
       else
-        [0, item_params[:content].size, item_params[:content].size]
+        [0, item_params[:content].first.size-1, item_params[:content].first.size]
       end
     end
 
@@ -129,7 +129,7 @@ class ItemsController < ApplicationController
     end
 
     def parent_item
-      @parent_item ||= if item_params[:parent_item_id]
+      @parent_item ||= unless item_params[:parent_item_id].blank?
                          Item.find(item_params[:parent_item_id])
                        else
                          nil

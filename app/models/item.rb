@@ -1,9 +1,10 @@
 class Item < ActiveRecord::Base
   extend FriendlyId
 
-  attr_accessor :name, :accounts
+  attr_accessor :name, :dirname, :accounts
   enum file_type: [:file, :directory]
   serialize :data, Hash
+  serialize :chunks, Array
   friendly_id :path, use: :slugged
 
   belongs_to :account
@@ -21,12 +22,27 @@ class Item < ActiveRecord::Base
     File.basename(self.path)
   end
 
+  def dirname
+    File.dirname(self.path)
+  end
+
   def accounts=(accounts)
     self.account = accounts.sample
   end
 
-  def write_content(file, starts, ends)
-    #self.account.upload_to(file.first, self)
+  def upload_complete?
+    self.chunks.inject(0) {|size,c| size + c.size } == self.file_size - 1
+  end
+
+  def write_content(file, range)
+    raise "Path is empty" if self.path.blank?
+    raise "Account is empty" if self.path.blank?
+
+    data[:upload_session] ||= {}
+
+    add_chunk(self.account.upload_to(path, file, range, data[:upload_session]))
+
+    finish_upload if upload_complete?
   end
 
   def download_url
@@ -50,5 +66,23 @@ class Item < ActiveRecord::Base
     end
 
     super
+  end
+
+  protected
+
+  def add_chunk new_chunk
+    if self.chunks.nil?
+      self.chunks = [new_chunk]
+    else
+      if prev_chunk = self.chunks.find {|c| c.ends == new_chunk.begins - 1 }
+        prev_chunk.add_chunk new_chunk
+      else
+        self.chunks << new_chunk
+      end
+    end
+  end
+
+  def finish_upload
+    self.account.finish_upload(data[:upload_session])
   end
 end
