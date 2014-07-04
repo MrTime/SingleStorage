@@ -41,12 +41,32 @@ class DropboxAccount < Account
     #end
   end
 
-  def upload_to1(file, item)
+  def upload_to(path, file, range, session)
     begin
-      # Upload the POST'd file to Dropbox, keeping the same name
-      resp = dropbox_client.put_file(file.original_filename, file.read)
+      session[:path] = path
+      resp = JSON.parse(dropbox_client.partial_chunked_upload(file.read(range.size), session[:id], range.begin).body)
+      logger.debug "upload resp #{resp['upload_id']}"
+      if session[:id].nil?
+        session[:id] = resp['upload_id']
+      end
 
-      item.update_attributes(file_attributes(resp))
+      super
+    rescue DropboxAuthError => e
+      item.errors.add(:base, "Dropbox auth error: #{e}")
+      logger.info "Dropbox auth error: #{e}"
+    rescue DropboxError => e
+      item.errors.add(:base, "Dropbox API error: #{e}")
+      logger.info "Dropbox API error: #{e}"
+    end
+  end
+
+  def finish_upload(session)
+    begin
+      logger.debug "FINISH_UPLOAD"
+      resp = dropbox_client.commit_chunked_upload(session[:path], session[:id])
+      logger.debug "upload resp #{resp.inspect}"
+      session[:id] = nil
+      session[:path] = nil
 
     rescue DropboxAuthError => e
       item.errors.add(:base, "Dropbox auth error: #{e}")

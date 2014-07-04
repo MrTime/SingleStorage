@@ -7,8 +7,6 @@ class Account < ActiveRecord::Base
   scope :with_available_bytes, -> (size) { where("available_size >= ?", size) }
 
   def upload_to(path, file, range, session)
-    #raise NotImplementedError
-    session[:id] = 1234
     Chunk.new(range, self)
   end
 
