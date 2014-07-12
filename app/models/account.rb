@@ -2,9 +2,13 @@ class Account < ActiveRecord::Base
   belongs_to :user
   has_many :items
 
-  after_create :fetch_files
+  after_create :queue_fetch_files
 
   scope :with_available_bytes, -> (size) { where("available_size >= ?", size) }
+
+  def queue_fetch_files
+    Resque.enqueue(AccountFilesFetcher, self.id)
+  end
 
   def upload_to(path, file, range, session)
     Chunk.new(range, self)
