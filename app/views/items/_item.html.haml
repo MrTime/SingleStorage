@@ -1,5 +1,5 @@
 .row
-  .col-md-8
+  .col-md-7
     = image_tag "items/#{item.icon}.gif"
     - if item.is_a? FolderItem
       = link_to item.name, item_path(item)
@@ -12,3 +12,5 @@
   .col-md-2
     = l(item.updated_at, format: :short)
 
+  .col-md-1
+    = button_to 'Delete', item_path(item), method: :delete, data: { :confirm => 'Are you sure?' }, class: 'btn btn-danger'

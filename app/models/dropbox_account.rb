@@ -66,6 +66,19 @@ class DropboxAccount < Account
     end
   end
 
+  def remove_file(item)
+    begin
+      dropbox_client.file_delete(item.path)
+
+    rescue DropboxAuthError => e
+      logger.info "Dropbox auth error: #{e}"
+      nil
+    rescue DropboxError => e
+      logger.info "Dropbox API error: #{e}"
+      nil
+    end
+  end
+
   def finish_upload(session)
     begin
       logger.debug "FINISH_UPLOAD"

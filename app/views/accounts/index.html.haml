@@ -16,7 +16,7 @@
       %td= number_to_human_size account.available_size
       %td= number_to_human_size account.total_size
       %td
-        = link_to 'Delete', account_path(account), :method => :delete, :data => { :confirm => 'Are you sure?' }
+        = link_to 'Delete', account_path(account), method: :delete, data: { :confirm => 'Are you sure?' }, class: 'btn btn-danger'
   %tr
     %td
     %td

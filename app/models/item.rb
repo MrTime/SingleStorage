@@ -1,6 +1,8 @@
 class Item < ActiveRecord::Base
   extend FriendlyId
 
+  after_destroy :clean_account
+  
   attr_accessor :name, :dirname, :accounts, :icon
   serialize :data, Hash
   friendly_id :path, use: :slugged
@@ -14,6 +16,10 @@ class Item < ActiveRecord::Base
   scope :root, -> { where(parent_item_id: nil) } 
   scope :files, -> { order('type desc, path asc') } 
   scope :by_path, -> (path) { where(path: path) }
+
+  def clean_account
+    self.account.remove_file(self)
+  end
 
   def name
     File.basename(self.path)

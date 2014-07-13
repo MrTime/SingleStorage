@@ -16,6 +16,10 @@ class Account < ActiveRecord::Base
     Chunk.new(range, self)
   end
 
+  def remove_file(item)
+    raise NotImplementedError
+  end
+
   def fetch_info
     raise NotImplementedError
   end

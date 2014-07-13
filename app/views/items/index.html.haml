@@ -6,7 +6,7 @@
 = link_to t('items.index.upload'), '#item_upload', 'data-remote' => new_item_path(root: @item.try(:id)), :class => 'btn btn-info', 'data-toggle' => 'modal'
 
 .row
-  .col-md-8
+  .col-md-7
     %h5
       = Item.human_attribute_name('name')
   .col-md-2
@@ -15,6 +15,7 @@
   .col-md-2
     %h5
       = Item.human_attribute_name('updated_at')
+  .col-md-1
 
 %ul.list-group#items
   = render collection: @items, partial: 'item'
