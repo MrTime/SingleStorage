@@ -6,18 +6,29 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = current_user.items.root.files
+    if request.head? and params[:filename]
+      check_path
+    else
+      @items = current_user.items.root.files
+    end
   end
+
 
   # GET /items/1
   # GET /items/1.json
   def show
-    if @item.is_a? FolderItem
-      @items = @item.children.files
-      add_item_parent_to_breadcrumb(@item)
-      render action: :index
+    if request.head?
+      response['Content-Length'] = @item.uploaded_size
+      
+      head :ok
     else
-      render layout: false if params[:remote]
+      if @item.is_a? FolderItem
+        @items = @item.children.files
+        add_item_parent_to_breadcrumb(@item)
+        render action: :index
+      else
+        render layout: false if params[:remote]
+      end
     end
   end
 
@@ -105,7 +116,7 @@ class ItemsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.friendly.find(params[:id])
+      @item = current_user.items.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -144,5 +155,20 @@ class ItemsController < ApplicationController
                        else
                          nil
                        end
+    end
+
+    def check_path
+      @item = if params[:parent_item_id].blank?
+                current_user.items.by_name(params[:filename]).find {|i| i.name == params[:filename]}
+              else
+                current_user.items.find(params[:parent_item_id]).children.by_name(params[:filename]).find {|i| i.name == params[:filename]}
+              end
+
+      if @item.nil?
+        head :ok
+      else
+        response.headers['Content-Length'] = @item.uploaded_size.to_s
+        head :created
+      end
     end
 end

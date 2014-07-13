@@ -38,6 +38,7 @@ class DropboxAccount < Account
 
         item.account = self
         item.parent_item_id = parent.id if parent
+        item.add_chunk Chunk.new(0...(item.file_size-1), self) if item.is_a? FileItem
         item.save
       end
     end

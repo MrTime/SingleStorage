@@ -25,7 +25,10 @@ class FileItem < Item
     ""
   end
 
-  protected
+  def uploaded_size
+    Chunk
+    (chunks.inject(0) {|sum, c| sum + c.size }) + 1
+  end
 
   def add_chunk new_chunk
     if self.chunks.nil?
@@ -38,6 +41,8 @@ class FileItem < Item
       end
     end
   end
+
+  protected
 
   def finish_upload
     self.account.finish_upload(data[:upload_session])

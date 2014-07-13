@@ -16,6 +16,7 @@ class Item < ActiveRecord::Base
   scope :root, -> { where(parent_item_id: nil) } 
   scope :files, -> { order('type desc, path asc') } 
   scope :by_path, -> (path) { where(path: path) }
+  scope :by_name, -> (name) { where("path like ?", "%#{name}%") }
 
   def clean_account
     self.account.remove_file(self)
@@ -39,5 +40,9 @@ class Item < ActiveRecord::Base
 
   def accounts=(accounts)
     self.account = accounts.sample
+  end
+  
+  def uploaded_size
+    0
   end
 end
