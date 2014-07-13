@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :items do
     member do
       get :download
+      get :thumbnail
     end
   end
 

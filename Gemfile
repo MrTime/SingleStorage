@@ -10,6 +10,7 @@ gem 'devise'
 gem 'friendly_id'
 gem 'jquery-ui-rails'
 gem 'resque'
+gem 'ejs'
 
 gem 'google-api-client'
 gem 'dropbox-sdk'

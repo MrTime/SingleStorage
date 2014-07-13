@@ -48,6 +48,12 @@ en:
       files: 'Files'
     show:
       dropbox_failed_download: "Cann't get download url"
+    new:
+      title: Upload files
+      add: 'Add files'
+      start: Start upload
+      cancel: Cancel upload
+      delete: Delete
 
   activerecord:
     attributes:

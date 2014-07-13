@@ -17,7 +17,7 @@ class ItemsController < ApplicationController
       add_item_parent_to_breadcrumb(@item)
       render action: :index
     else
-      render layout: false
+      render layout: false if params[:remote]
     end
   end
 
@@ -25,6 +25,8 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @item.parent = Item.find(params[:root]) if params[:root]
+
+    render layout: false
   end
 
   # GET /items/1/edit
@@ -36,6 +38,10 @@ class ItemsController < ApplicationController
     redirect_to @item.download_url
   end
 
+  def thumbnail
+    ""
+  end
+
   # POST /items
   # POST /items.json
   def create
@@ -45,7 +51,7 @@ class ItemsController < ApplicationController
       @item = current_user.items.by_path(full_item_path).first
     else
       if parent_item.nil?
-        @item = Item.new
+        @item = FileItem.new
       else
         @item = parent_item.children.new
       end

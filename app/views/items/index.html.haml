@@ -3,7 +3,7 @@
 
 = render_breadcrumbs
 
-= link_to t('items.index.upload'), new_item_path(root: @item.try(:id)), type: :button, class: 'btn btn-info'
+= link_to t('items.index.upload'), '#item_upload', 'data-remote' => new_item_path(root: @item.try(:id)), :class => 'btn btn-info', 'data-toggle' => 'modal'
 
 .row
   .col-md-8
@@ -23,3 +23,7 @@
   header: { show_close: true, dismiss: 'modal', title: 'Preview' },
   body: '',
   footer: content_tag(:button, 'Save', class: 'btn') 
+
+#item_upload.modal.fade{:tabindex => "-1", :role => "dialog", 'aria-hidden'=>"true"}
+  .modal-dialog.modal-lg
+    .modal-content

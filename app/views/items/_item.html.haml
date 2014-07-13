@@ -4,7 +4,7 @@
     - if item.is_a? FolderItem
       = link_to item.name, item_path(item)
     - else
-      = link_to item.name, '#item_preview', 'data-remote' => item_path(item), 'data-toggle' => 'modal'
+      = link_to item.name, '#item_preview', 'data-remote' => item_path(item, remote: true), 'data-toggle' => 'modal'
 
   .col-md-2
     - unless item.is_a? FolderItem

@@ -70,6 +70,7 @@ GEM
     diff-lcs (1.2.5)
     dropbox-sdk (1.6.4)
       json
+    ejs (1.1.1)
     erubis (2.7.0)
     execjs (2.0.2)
     extlib (0.9.16)
@@ -235,6 +236,7 @@ DEPENDENCIES
   debugger
   devise
   dropbox-sdk
+  ejs
   factory_girl_rails
   friendly_id
   google-api-client
