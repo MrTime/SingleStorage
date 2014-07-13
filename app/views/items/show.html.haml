@@ -1,0 +1,6 @@
+= modal_header show_close: true, dismiss: 'modal', title: @item.name
+= modal_body do
+  = render @item
+.modal-footer
+  = link_to t('items.index.download'), download_item_path(@item), class: 'btn btn-info', target: '_blank'
+

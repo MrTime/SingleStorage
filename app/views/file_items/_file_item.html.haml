@@ -1,9 +1,6 @@
-.row
-  .col-md-8
-    = image_tag "items/#{file_item.icon}.gif"
-    = link_to file_item.name, item_path(file_item)
-  .col-md-2
-    = number_to_human_size(file_item.file_size)
-  .col-md-2
-    = l(file_item.updated_at, format: :short)
+%p.text-center
+  File
+
+%p.text-center
+  = number_to_human_size(file_item.file_size)
 

@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :download]
   add_breadcrumb :index, :items_path
 
   # GET /items
@@ -17,9 +17,8 @@ class ItemsController < ApplicationController
       add_item_parent_to_breadcrumb(@item)
       render action: :index
     else
-      redirect_to @item.preview_url
+      render layout: false
     end
-
   end
 
   # GET /items/new
@@ -30,6 +29,11 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
+  end
+
+  # GET /items/1/download
+  def download
+    redirect_to @item.download_url
   end
 
   # POST /items

@@ -6,7 +6,11 @@ Rails.application.routes.draw do
   get 'home/index'
 
   resources :accounts
-  resources :items
+  resources :items do
+    member do
+      get :download
+    end
+  end
 
   namespace :services do
     resources :dropbox, only: [:new] do

@@ -21,6 +21,9 @@ ready = ->
   ).prop('disabled', !$.support.fileInput)
    .parent().addClass($.support.fileInput ? undefined : 'disabled')
 
+  $('body').on 'hidden.bs.modal', '.modal', ->
+    $(this).removeData('bs.modal');
+
 $(document).ready(ready)
 $(document).on('page:load', ready)
 

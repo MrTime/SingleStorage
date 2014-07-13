@@ -17,5 +17,9 @@
       = Item.human_attribute_name('updated_at')
 
 %ul.list-group#items
-  = render @items
+  = render collection: @items, partial: 'item'
 
+= modal_dialog id: 'item_preview', 
+  header: { show_close: true, dismiss: 'modal', title: 'Preview' },
+  body: '',
+  footer: content_tag(:button, 'Save', class: 'btn') 

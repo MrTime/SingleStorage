@@ -85,7 +85,7 @@ class DropboxAccount < Account
 
   def download_url(item) 
     begin
-      dropbox_client.media(item.name)['url']
+      dropbox_client.media(item.path)['url']
 
     rescue DropboxAuthError => e
       logger.info "Dropbox auth error: #{e}"

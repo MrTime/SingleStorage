@@ -1,0 +1,14 @@
+.row
+  .col-md-8
+    = image_tag "items/#{item.icon}.gif"
+    - if item.is_a? FolderItem
+      = link_to item.name, item_path(item)
+    - else
+      = link_to item.name, '#item_preview', 'data-remote' => item_path(item), 'data-toggle' => 'modal'
+
+  .col-md-2
+    - unless item.is_a? FolderItem
+      = number_to_human_size(item.file_size)
+  .col-md-2
+    = l(item.updated_at, format: :short)
+
