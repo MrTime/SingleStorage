@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140704123027) do
+ActiveRecord::Schema.define(version: 20140713120420) do
 
   create_table "accounts", force: true do |t|
     t.string   "login"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20140704123027) do
     t.integer  "permissions"
     t.integer  "parent_item_id"
     t.integer  "account_id",     null: false
-    t.integer  "file_type"
+    t.string   "type"
     t.string   "mime_type"
     t.datetime "created_at"
     t.datetime "updated_at"

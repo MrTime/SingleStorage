@@ -1,6 +1,9 @@
+.page-header
+  %h1= t('items.index.files')
+
 = render_breadcrumbs
 
-= link_to 'New Item', new_item_path(root: @item.try(:id))
+= link_to t('items.index.upload'), new_item_path(root: @item.try(:id)), type: :button, class: 'btn btn-info'
 
 .row
   .col-md-8
@@ -15,6 +18,4 @@
 
 %ul.list-group#items
   = render @items
-
-%br
 

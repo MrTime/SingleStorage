@@ -4,12 +4,12 @@ class Account < ActiveRecord::Base
 
   validates :login, uniqueness: {scope: :type}
 
-  #after_create :queue_fetch_files
+  after_create :queue_fetch_files
 
   scope :with_available_bytes, -> (size) { where("available_size >= ?", size) }
 
   def queue_fetch_files
-    Resque.enqueue(AccountFilesFetcher, self.id)
+    Resque.enqueue(AccountFilesFetcher, self.id, nil, '/')
   end
 
   def upload_to(path, file, range, session)

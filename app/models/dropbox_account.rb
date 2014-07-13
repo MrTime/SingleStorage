@@ -25,16 +25,20 @@ class DropboxAccount < Account
   end
   
   def fetch_directory(path, parent = nil)
-    folders = []
+    #folders = []
 
     Item.transaction do
       files = dropbox_client.metadata(path)['contents']
       files.each do |f|
-        item = items.new(file_attributes(f))
-        item.parent_item_id = parent.id if parent
-        item.save!
+        item = if f['is_dir']
+                 FolderItem.new(folder_attributes(f))
+               else
+                 FileItem.new(file_attributes(f))
+               end
 
-        folders << item if item.directory?
+        item.account = self
+        item.parent_item_id = parent.id if parent
+        item.save
       end
     end
 
@@ -105,12 +109,21 @@ class DropboxAccount < Account
     end
   end
 
+  protected
+
   def file_attributes(f)
     {
       path: f['path'], 
       file_size: f['size'],
-      file_type: f['is_dir'] == true ? :directory : :file,
-      mime_type: f['mime_type']
+      mime_type: f['mime_type'],
+      icon: f['icon']
+    }
+  end
+
+  def folder_attributes(f)
+    {
+      path: f['path'], 
+      icon: f['icon']
     }
   end
 end

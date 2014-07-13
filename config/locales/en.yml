@@ -45,6 +45,7 @@ en:
   items:
     index:
       download: 'Download'
+      files: 'Files'
     show:
       dropbox_failed_download: "Cann't get download url"
 

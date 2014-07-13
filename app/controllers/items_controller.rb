@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    if @item.directory?
+    if @item.is_a? FolderItem
       @items = @item.children.files
       add_item_parent_to_breadcrumb(@item)
       render action: :index
