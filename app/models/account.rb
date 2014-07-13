@@ -1,8 +1,10 @@
 class Account < ActiveRecord::Base
   belongs_to :user
-  has_many :items
+  has_many :items, dependent: :delete_all
 
-  after_create :queue_fetch_files
+  validates :login, uniqueness: {scope: :type}
+
+  #after_create :queue_fetch_files
 
   scope :with_available_bytes, -> (size) { where("available_size >= ?", size) }
 
@@ -12,6 +14,10 @@ class Account < ActiveRecord::Base
 
   def upload_to(path, file, range, session)
     Chunk.new(range, self)
+  end
+
+  def fetch_info
+    raise NotImplementedError
   end
 
   def finish_upload(session)

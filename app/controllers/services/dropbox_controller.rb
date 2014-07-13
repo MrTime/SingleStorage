@@ -12,25 +12,30 @@ class Services::DropboxController < ApplicationController
     begin
       access_token, user_id, url_state = get_web_auth.finish(params)
 
-      @account = DropboxAccount.create(access_token: access_token, user: current_user)
+      @account = DropboxAccount.new(access_token: access_token, user: current_user)
+      @account.fetch_info
 
-      redirect_to accounts_path
+      if @account.save
+        redirect_to accounts_path
+      else
+        redirect_to accounts_path, flash: {error: @account.errors.full_messages.join(',') }
+      end
     rescue DropboxOAuth2Flow::BadRequestError => e
       render :text => "Error in OAuth 2 flow: Bad request: #{e}"
     rescue DropboxOAuth2Flow::BadStateError => e
       logger.info("Error in OAuth 2 flow: No CSRF token in session: #{e}")
-      redirect_to(:action => 'auth_start')
+      redirect_to new_account_path
     rescue DropboxOAuth2Flow::CsrfError => e
       logger.info("Error in OAuth 2 flow: CSRF mismatch: #{e}")
-      render :text => "CSRF error"
+      redirect_to new_account_path, flash: { error: "CSRF error" }
     rescue DropboxOAuth2Flow::NotApprovedError => e
-      render :text => "Not approved?  Why not, bro?"
+      redirect_to new_account_path, flash: { error: t('accounts.new.canceled') }
     rescue DropboxOAuth2Flow::ProviderError => e
       logger.info "Error in OAuth 2 flow: Error redirect from Dropbox: #{e}"
-      render :text => "Strange error."
+      redirect_to new_account_path, flash: { error: "Strange error." }
     rescue DropboxError => e
       logger.info "Error getting OAuth 2 access token: #{e}"
-      render :text => "Error communicating with Dropbox servers."
+      redirect_to new_account_path, flash: { error: "Error communicating with Dropbox servers." }
     end
   end
 

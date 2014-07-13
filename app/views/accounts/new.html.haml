@@ -1,8 +1,13 @@
-%h1 New account
+%h1= t('accounts.index.add')
 
-= link_to t('accounts.new.dropbox'), new_services_dropbox_path, class: 'new-dropbox'
-= link_to t('accounts.new.googledrive'), new_services_googledrive_path, class: 'new-google-drive'
+.row
+  .col-md-3
+    = link_to new_services_dropbox_path, class: 'thumbnail new-dropbox' do
+      %img{'src' => asset_path('dropbox-icon-256.png'), :alt => t('accounts.new.dropbox')}
+  .col-md-3
+    = link_to new_services_googledrive_path, class: 'thumbnail new-google-drive' do
+      %img{'src' => asset_path('googledrive-icon-256.png'), :alt => t('accounts.new.googledrive')}
 
 %br/
 
-= link_to 'Back', accounts_path
+= link_to t('accounts.new.back'), accounts_path, type: 'button', class: 'btn btn-default'

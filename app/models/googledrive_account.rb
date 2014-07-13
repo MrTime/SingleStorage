@@ -1,11 +1,13 @@
 require 'google/api_client'
 
 class GoogledriveAccount < Account
-  store :data, accessors: [:access_token, :refresh_token, :expires_in, :issued_at],  coder: JSON
+  store :data, accessors: [:access_token, :refresh_token, :expires_in, :issued_at, :uid],  coder: JSON
 
-  before_create :extract_google_drive_account
+  def icon
+    "googledrive-icon-48.png"
+  end
 
-  def extract_google_drive_account
+  def fetch_info
     account_info = user_info
     about_info = about 
     self.login = account_info.email

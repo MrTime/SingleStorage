@@ -23,7 +23,7 @@ en:
   brand: "Singlecloud"
 
   layout:
-    accounts: Accounts
+    accounts: Clouds
     settings: Settings
     logout: Logout
 
@@ -32,9 +32,15 @@ en:
       start_using: Start Using
 
   accounts:
+    index:
+      your_accounts: Your clouds
+      add: Connect new cloud
+
     new:
       dropbox: 'Add Dropbox account'
       googledrive: 'Add Google Drive account'
+      back: 'Back'
+      canceled: 'Canceled by user'
 
   items:
     index:

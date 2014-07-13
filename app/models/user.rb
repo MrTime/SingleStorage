@@ -7,4 +7,12 @@ class User < ActiveRecord::Base
   has_many :accounts
 
   has_many :items, through: :accounts
+
+  def available_size
+    accounts.sum(:available_size)
+  end
+
+  def total_size
+    accounts.sum(:total_size)
+  end
 end

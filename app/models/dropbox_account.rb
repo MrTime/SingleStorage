@@ -1,13 +1,15 @@
 require 'dropbox_sdk'
 
 class DropboxAccount < Account
-  store :data, accessors: [:access_token],  coder: JSON
+  store :data, accessors: [:access_token, :uid],  coder: JSON
 
-  before_create :extract_dropbox_account
-  after_create :fetch_files
+  def icon
+    "dropbox-icon-48.png"
+  end
 
-  def extract_dropbox_account
+  def fetch_info
     account_info = dropbox_client.account_info
+    self.uid = account_info['uid']
     self.login = account_info['display_name']
     quota = account_info['quota_info']
     self.total_size = quota['quota'].to_i

@@ -1,19 +1,33 @@
-%h1 Listing accounts
+.page-header
+  %h1= t('accounts.index.your_accounts')
 
-%table
+%table.table
   %tr
+    %th
     %th= Account.human_attribute_name('login')
-    %th= Account.human_attribute_name('total_size')
     %th= Account.human_attribute_name('available_size')
+    %th= Account.human_attribute_name('total_size')
     %th
 
   - @accounts.each do |account|
     %tr
+      %td= image_tag(account.icon)
       %td= account.login
-      %td= account.total_size
-      %td= account.available_size
-      %td= link_to 'Destroy', account_path(account), :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= number_to_human_size account.available_size
+      %td= number_to_human_size account.total_size
+      %td
+        = link_to 'Delete', account_path(account), :method => :delete, :data => { :confirm => 'Are you sure?' }
+  %tr
+    %td
+    %td
+    %td
+      %b
+        = number_to_human_size current_user.available_size
+    %td
+      %b
+        = number_to_human_size current_user.total_size
+    %td
 
 %br
 
-= link_to 'New Account', new_account_path
+= link_to t('accounts.index.add'), new_account_path, class: 'btn btn-info', type: 'button'
