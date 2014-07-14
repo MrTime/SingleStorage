@@ -3,7 +3,7 @@
 
 = render_breadcrumbs
 
-= link_to t('items.index.upload'), '#item_upload', 'data-remote' => new_item_path(root: @item.try(:id)), :class => 'btn btn-info', 'data-toggle' => 'modal'
+= link_to t('items.index.new'), '#item_upload', 'data-remote' => new_item_path(root: @item.try(:id)), :class => 'btn btn-info', 'data-toggle' => 'modal'
 
 .row
   .col-md-7

@@ -128,7 +128,7 @@ class DropboxAccount < Account
   def file_attributes(f)
     {
       path: f['path'], 
-      file_size: f['size'],
+      file_size: f['bytes'].to_i,
       mime_type: f['mime_type'],
       icon: f['icon']
     }

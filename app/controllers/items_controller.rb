@@ -46,6 +46,7 @@ class ItemsController < ApplicationController
 
   # GET /items/1/download
   def download
+    response.headers['Content-Type'] = @item.mime_type
     redirect_to @item.download_url
   end
 
@@ -61,11 +62,8 @@ class ItemsController < ApplicationController
     if start_byte > 0
       @item = current_user.items.by_path(full_item_path).first
     else
-      if parent_item.nil?
-        @item = FileItem.new
-      else
-        @item = parent_item.children.new
-      end
+      @item = FileItem.new
+      @item.parent = parent_item unless parent_item.nil?
 
       @item.assign_attributes(path: full_item_path,
                               mime_type: item_content_type,
