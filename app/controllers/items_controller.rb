@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_item, only: [:show, :edit, :update, :destroy, :download]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :download, :thumbnail]
   add_breadcrumb :index, :items_path
 
   # GET /items
@@ -46,12 +46,21 @@ class ItemsController < ApplicationController
 
   # GET /items/1/download
   def download
-    response.headers['Content-Type'] = @item.mime_type
-    redirect_to @item.download_url
+    if @item.download_url?
+      redirect_to @item.download_url
+    else
+      # TODO: adding range parameter
+      send_data @item.download
+    end
   end
 
   def thumbnail
-    ""
+    if @item.thumbnail_url?
+      redirect_to @item.thumbnail_url params[:s]
+    else
+      img = @item.thumbnail params[:s]
+      send_data img
+    end
   end
 
   # POST /items

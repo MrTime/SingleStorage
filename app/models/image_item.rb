@@ -1,0 +1,3 @@
+class ImageItem < FileItem
+
+end

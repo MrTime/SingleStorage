@@ -97,6 +97,10 @@ class DropboxAccount < Account
     end
   end
 
+  def download_url?
+    true
+  end
+
   def download_url(item) 
     begin
       dropbox_client.media(item.path)['url']
@@ -110,9 +114,15 @@ class DropboxAccount < Account
     end
   end
 
-  def preview_url(item) 
+  def thumbnail_url?
+    false
+  end
+
+  def thumbnail(item, size)
     begin
-      dropbox_client.media(item.path)['url']
+      puts item.path
+      puts size
+      dropbox_client.thumbnail(item.path, size)
 
     rescue DropboxAuthError => e
       logger.info "Dropbox auth error: #{e}"
@@ -123,6 +133,7 @@ class DropboxAccount < Account
     end
   end
 
+
   protected
 
   def file_attributes(f)
@@ -130,7 +141,8 @@ class DropboxAccount < Account
       path: f['path'], 
       file_size: f['bytes'].to_i,
       mime_type: f['mime_type'],
-      icon: f['icon']
+      icon: f['icon'],
+      thumbnail_exists: f['thumb_exists']
     }
   end
 

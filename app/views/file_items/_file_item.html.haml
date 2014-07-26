@@ -1,5 +1,8 @@
 %p.text-center
-  File
+  - if file_item.thumbnail_exists?
+    = image_tag thumbnail_item_path(file_item, s: 'l')
+  - else
+    = image_tag "items/#{file_item.icon}48.gif"
 
 %p.text-center
   = number_to_human_size(file_item.file_size)

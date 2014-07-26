@@ -1,6 +1,6 @@
 .row
   .col-md-7
-    = image_tag "items/#{item.icon}.gif"
+    = item_icon(item)
     - if item.is_a? FolderItem
       = link_to item.name, item_path(item)
     - else

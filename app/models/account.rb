@@ -36,7 +36,27 @@ class Account < ActiveRecord::Base
     raise NotImplementedError
   end
 
-  def preview_url(item) 
+  def download_url?
+    raise NotImplementedError
+  end
+
+  def download_url(item)
+    raise NotImplementedError
+  end
+
+  def download(item, range)
+    raise NotImplementedError
+  end
+
+  def thumbnail_url?
+    raise NotImplementedError
+  end
+
+  def thumbnail_url(itm)
+    raise NotImplementedError
+  end
+
+  def thumbnail(item, size)
     raise NotImplementedError
   end
 end

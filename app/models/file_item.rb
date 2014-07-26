@@ -16,13 +16,29 @@ class FileItem < Item
     finish_upload if upload_complete?
   end
 
+  def download_url?
+    self.account.download_url?
+  end
+
   def download_url
     self.account.download_url(self)
   end
 
-  def preview_url
-    #self.account.preview_url(self)
-    ""
+  def download(range)
+    # TODO: download from few accounts
+    self.account.download(self, range)
+  end
+
+  def thumbnail_url?
+    self.account.thumbnail_url?
+  end
+
+  def thumbnail_url
+    self.account.thumbnail_url(self)
+  end
+
+  def thumbnail(size)
+    self.account.thumbnail(self, size)
   end
 
   def uploaded_size

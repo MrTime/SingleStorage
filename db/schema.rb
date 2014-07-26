@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140713120420) do
+ActiveRecord::Schema.define(version: 20140726220020) do
 
   create_table "accounts", force: true do |t|
     t.string   "login"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20140713120420) do
     t.string   "path"
     t.integer  "permissions"
     t.integer  "parent_item_id"
-    t.integer  "account_id",     null: false
+    t.integer  "account_id",                       null: false
     t.string   "type"
     t.string   "mime_type"
     t.datetime "created_at"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20140713120420) do
     t.integer  "file_size"
     t.string   "slug"
     t.text     "chunks"
+    t.boolean  "thumbnail_exists", default: false
   end
 
   add_index "items", ["slug"], name: "index_items_on_slug", unique: true, using: :btree
